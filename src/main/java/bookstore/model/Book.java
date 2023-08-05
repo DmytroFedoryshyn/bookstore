@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,16 +15,15 @@ import lombok.Setter;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+    @Column(nullable = false)
     private Long id;
-    @NotNull
+    @Column(nullable = false)
     private String title;
-    @NotNull
+    @Column(nullable = false)
     private String author;
-    @NotNull
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String isbn;
-    @NotNull
+    @Column(nullable = false)
     private BigDecimal price;
     private String description;
     private String coverImage;
