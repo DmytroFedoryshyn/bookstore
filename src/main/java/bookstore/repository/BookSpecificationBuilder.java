@@ -6,10 +6,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookSpecificationBuilder implements SpecificationBuilder<Book>{
+public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
     private final SpecificationProviderManager<Book> specificationProviderManager;
 
-    public BookSpecificationBuilder(SpecificationProviderManager<Book> specificationProviderManager) {
+    public BookSpecificationBuilder(SpecificationProviderManager<Book>
+                                            specificationProviderManager) {
         this.specificationProviderManager = specificationProviderManager;
     }
 
@@ -19,13 +20,17 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book>{
         if (searchParametersDto.getAuthors() != null
                 && searchParametersDto.getAuthors().length > 0) {
             specification =
-                    specification.and(specificationProviderManager.getSpecificationProvider("author").getSpecification(searchParametersDto.getAuthors()));
+                    specification.and(specificationProviderManager
+                            .getSpecificationProvider("author")
+                            .getSpecification(searchParametersDto.getAuthors()));
         }
 
         if (searchParametersDto.getTitles() != null
                 && searchParametersDto.getTitles().length > 0) {
             specification =
-                    specification.and(specificationProviderManager.getSpecificationProvider("title").getSpecification(searchParametersDto.getTitles()));
+                    specification.and(specificationProviderManager
+                            .getSpecificationProvider("title")
+                            .getSpecification(searchParametersDto.getTitles()));
         }
 
         return specification;

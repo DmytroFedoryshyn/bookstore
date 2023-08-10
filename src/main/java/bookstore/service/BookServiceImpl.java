@@ -19,7 +19,8 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookSpecificationBuilder bookSpecificationBuilder;
 
-    public BookServiceImpl(BookRepository bookRepository, BookSpecificationBuilder bookSpecificationBuilder) {
+    public BookServiceImpl(BookRepository bookRepository,
+                           BookSpecificationBuilder bookSpecificationBuilder) {
         this.bookRepository = bookRepository;
         this.bookSpecificationBuilder = bookSpecificationBuilder;
     }
