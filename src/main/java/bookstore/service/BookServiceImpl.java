@@ -18,24 +18,27 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookSpecificationBuilder bookSpecificationBuilder;
+    private final BookMapper bookMapper;
 
     public BookServiceImpl(BookRepository bookRepository,
-                           BookSpecificationBuilder bookSpecificationBuilder) {
+                           BookSpecificationBuilder bookSpecificationBuilder,
+                           BookMapper bookMapper) {
         this.bookRepository = bookRepository;
         this.bookSpecificationBuilder = bookSpecificationBuilder;
+        this.bookMapper = bookMapper;
     }
 
     @Override
     public BookDto save(CreateBookRequestDto product) {
-        return BookMapper.INSTANCE
+        return bookMapper
                 .toBookDto(bookRepository
-                        .save(BookMapper.INSTANCE.toBook(product)));
+                        .save(bookMapper.toBook(product)));
     }
 
     @Override
     public List<BookDto> findAll() {
         return bookRepository.findAll().stream()
-                .map(BookMapper.INSTANCE::toBookDto)
+                .map(bookMapper::toBookDto)
                 .collect(Collectors.toList());
     }
 
@@ -46,14 +49,14 @@ public class BookServiceImpl implements BookService {
             throw new EntityNotFoundException("Could not retrieve book by ID");
         }
 
-        return BookMapper.INSTANCE.toBookDto(optional.get());
+        return bookMapper.toBookDto(optional.get());
     }
 
     @Override
     public BookDto update(CreateBookRequestDto product, Long id) {
-        Book book = BookMapper.INSTANCE.toBook(product);
+        Book book = bookMapper.toBook(product);
         book.setId(id);
-        return BookMapper.INSTANCE.toBookDto(bookRepository.save(book));
+        return bookMapper.toBookDto(bookRepository.save(book));
     }
 
     @Override
@@ -66,6 +69,6 @@ public class BookServiceImpl implements BookService {
         Specification<Book> bookSpecification = bookSpecificationBuilder.build(searchParametersDto);
         return bookRepository.findAll(bookSpecification)
                 .stream()
-                .map(BookMapper.INSTANCE::toBookDto).toList();
+                .map(bookMapper::toBookDto).toList();
     }
 }
