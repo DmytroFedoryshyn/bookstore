@@ -1,6 +1,5 @@
 package bookstore.dto;
 
-import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
