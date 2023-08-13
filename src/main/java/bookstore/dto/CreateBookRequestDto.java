@@ -1,6 +1,7 @@
 package bookstore.dto;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.Getter;
@@ -10,11 +11,11 @@ import org.hibernate.validator.constraints.ISBN;
 @Getter
 @Setter
 public class CreateBookRequestDto {
-    @NotNull
+    @NotBlank
     private String title;
-    @NotNull
+    @NotBlank
     private String author;
-    @NotNull
+    @NotBlank
     @ISBN
     private String isbn;
     @NotNull
