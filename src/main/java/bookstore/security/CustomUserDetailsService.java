@@ -1,37 +1,22 @@
-package bookstore.service;
+package bookstore.security;
 
-import bookstore.dto.UserResponseDto;
-import bookstore.mapper.UserMapper;
-import bookstore.model.Role;
 import bookstore.model.User;
-import java.util.stream.Collectors;
+import bookstore.repository.user.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserResponseDto user = userService.loadByUsername(username);
-
-        org.springframework.security.core.userdetails.User.UserBuilder builder;
-        if (user != null) {
-            builder = org.springframework.security.core.userdetails.User.withUsername(username);
-            builder.password(user.getPassword());
-            builder.roles(user.getRoles()
-                    .stream()
-                    .map(Role::getName)
-                    .toArray(String[]::new));
-            return builder.build();
-        }
-
-        throw new UsernameNotFoundException("User not found.");
+        Optional<User> userOptional = userRepository.findByEmail(username);
+        return userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 }
