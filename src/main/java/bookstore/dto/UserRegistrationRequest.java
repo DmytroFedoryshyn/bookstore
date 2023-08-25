@@ -10,13 +10,10 @@ import lombok.Data;
 @PasswordsMatch
 public class UserRegistrationRequest {
     @Email
-    @Size(min = 4, max = 50)
     private String email;
     @NotBlank
     @Size(min = 6, max = 100)
     private String password;
-    @NotBlank
-    @Size(min = 6, max = 100)
     private String repeatPassword;
     @NotBlank
     @Size(min = 6, max = 100)
