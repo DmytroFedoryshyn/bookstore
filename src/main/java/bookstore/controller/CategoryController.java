@@ -3,7 +3,6 @@ package bookstore.controller;
 import bookstore.dto.book.BookResponseDtoWithoutCategoryIds;
 import bookstore.dto.category.CategoryResponseDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
-import bookstore.mapper.BookMapper;
 import bookstore.service.BookService;
 import bookstore.service.CategoryService;
 import bookstore.util.SortParametersParsingUtil;
