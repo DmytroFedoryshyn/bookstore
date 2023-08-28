@@ -40,7 +40,6 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final BookService bookService;
     private final SortParametersParsingUtil sortParametersParsingUtil;
-    private final BookMapper bookMapper;
 
     @Operation(summary = "Create a new category")
     @PostMapping
