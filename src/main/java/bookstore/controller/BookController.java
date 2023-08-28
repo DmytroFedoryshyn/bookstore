@@ -1,8 +1,8 @@
 package bookstore.controller;
 
-import bookstore.dto.BookResponseDto;
-import bookstore.dto.BookSearchParametersDto;
-import bookstore.dto.CreateBookRequestDto;
+import bookstore.dto.book.BookResponseDto;
+import bookstore.dto.book.BookSearchParametersDto;
+import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.service.BookService;
 import bookstore.util.SortParametersParsingUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -92,7 +92,7 @@ public class BookController {
                             + " \"title\": \"Updated Book\", \"author\": \"Jane Smith\"}"))
     })
     @ApiResponse(responseCode = "404", description = "Book not found")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public BookResponseDto update(@Valid @RequestBody CreateBookRequestDto bookDto,
                                   @PathVariable Long id) {
         return bookService.update(bookDto, id);

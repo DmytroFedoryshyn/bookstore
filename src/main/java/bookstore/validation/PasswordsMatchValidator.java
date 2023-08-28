@@ -1,6 +1,6 @@
 package bookstore.validation;
 
-import bookstore.dto.UserRegistrationRequest;
+import bookstore.dto.user.UserRegistrationRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.Objects;

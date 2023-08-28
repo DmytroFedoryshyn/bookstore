@@ -1,11 +1,10 @@
-package bookstore.dto;
+package bookstore.dto.book;
 
 import java.math.BigDecimal;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Set;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class BookResponseDto {
     private Long id;
     private String title;
@@ -14,4 +13,5 @@ public class BookResponseDto {
     private BigDecimal price;
     private String description;
     private String coverImage;
+    private Set<Long> categories;
 }
