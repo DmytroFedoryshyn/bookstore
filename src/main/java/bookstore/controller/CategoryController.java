@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ public class CategoryController {
     private final BookService bookService;
     private final SortParametersParsingUtil sortParametersParsingUtil;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Create a new category")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -88,6 +90,7 @@ public class CategoryController {
         return categoryService.getById(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Update a category by ID")
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "Category updated", content = {
@@ -103,6 +106,7 @@ public class CategoryController {
         return categoryService.update(id, categoryDto);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Delete a category by ID")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

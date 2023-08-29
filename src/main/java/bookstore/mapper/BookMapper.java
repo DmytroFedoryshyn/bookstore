@@ -31,11 +31,7 @@ public interface BookMapper {
     @Named("mapLongsToCategories")
     default Set<Category> mapLongsToCategories(Set<Long> categoryIds) {
         return categoryIds.stream()
-                .map(id -> {
-                    Category category = new Category();
-                    category.setId(id);
-                    return category;
-                })
+                .map(Category::new)
                 .collect(Collectors.toSet());
     }
 

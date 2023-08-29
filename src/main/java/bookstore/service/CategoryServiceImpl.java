@@ -2,6 +2,7 @@ package bookstore.service;
 
 import bookstore.dto.category.CategoryResponseDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
+import bookstore.exception.EntityNotFoundException;
 import bookstore.mapper.CategoryMapper;
 import bookstore.model.Category;
 import bookstore.repository.category.CategoryRepository;
@@ -37,8 +38,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponseDto update(Long id, CreateCategoryRequestDto categoryDto) {
+        Category dbCategory = repository.findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Category not found with ID: " + id));
         Category category = mapper.toEntity(categoryDto);
-        category.setId(id);
         return mapper.toDto(repository.save(category));
     }
 
