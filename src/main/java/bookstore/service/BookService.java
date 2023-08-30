@@ -1,7 +1,7 @@
 package bookstore.service;
 
-import bookstore.dto.book.BookResponseDto;
 import bookstore.dto.book.BaseBookResponseDto;
+import bookstore.dto.book.BookResponseDto;
 import bookstore.dto.book.BookSearchParametersDto;
 import bookstore.dto.book.CreateBookRequestDto;
 import java.util.List;

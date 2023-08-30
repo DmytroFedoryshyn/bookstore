@@ -1,8 +1,8 @@
 package bookstore.mapper;
 
 import bookstore.config.MapperConfig;
-import bookstore.dto.book.BookResponseDto;
 import bookstore.dto.book.BaseBookResponseDto;
+import bookstore.dto.book.BookResponseDto;
 import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.model.Book;
 import bookstore.model.Category;
