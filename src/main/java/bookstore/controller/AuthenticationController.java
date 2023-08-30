@@ -1,9 +1,9 @@
 package bookstore.controller;
 
-import bookstore.dto.UserLoginRequestDto;
-import bookstore.dto.UserLoginResponseDto;
-import bookstore.dto.UserRegistrationRequest;
-import bookstore.dto.UserResponseDto;
+import bookstore.dto.user.UserLoginRequestDto;
+import bookstore.dto.user.UserLoginResponseDto;
+import bookstore.dto.user.UserRegistrationRequest;
+import bookstore.dto.user.UserResponseDto;
 import bookstore.exception.RegistrationException;
 import bookstore.security.AuthenticationService;
 import bookstore.service.UserService;
