@@ -2,7 +2,7 @@ package bookstore.mapper;
 
 import bookstore.config.MapperConfig;
 import bookstore.dto.book.BookResponseDto;
-import bookstore.dto.book.BookResponseDtoWithoutCategoryIds;
+import bookstore.dto.book.BaseBookResponseDto;
 import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.model.Book;
 import bookstore.model.Category;
@@ -26,7 +26,7 @@ public interface BookMapper {
             source = "book.categories", qualifiedByName = "mapCategoriesToLongs")
     BookResponseDto toBookDto(Book book);
 
-    BookResponseDtoWithoutCategoryIds toDtoWithoutCategories(Book book);
+    BaseBookResponseDto toDtoWithoutCategories(Book book);
 
     @Named("mapLongsToCategories")
     default Set<Category> mapLongsToCategories(Set<Long> categoryIds) {

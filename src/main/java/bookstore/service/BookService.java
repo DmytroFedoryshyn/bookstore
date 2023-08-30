@@ -1,7 +1,7 @@
 package bookstore.service;
 
 import bookstore.dto.book.BookResponseDto;
-import bookstore.dto.book.BookResponseDtoWithoutCategoryIds;
+import bookstore.dto.book.BaseBookResponseDto;
 import bookstore.dto.book.BookSearchParametersDto;
 import bookstore.dto.book.CreateBookRequestDto;
 import java.util.List;
@@ -20,5 +20,5 @@ public interface BookService {
 
     List<BookResponseDto> search(BookSearchParametersDto searchParametersDto, Pageable pageable);
 
-    List<BookResponseDtoWithoutCategoryIds> findAllByCategories_Id(Long id, Pageable pageable);
+    List<BaseBookResponseDto> findAllByCategories_Id(Long id, Pageable pageable);
 }

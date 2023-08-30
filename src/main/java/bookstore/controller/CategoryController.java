@@ -1,6 +1,6 @@
 package bookstore.controller;
 
-import bookstore.dto.book.BookResponseDtoWithoutCategoryIds;
+import bookstore.dto.book.BaseBookResponseDto;
 import bookstore.dto.category.CategoryResponseDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
 import bookstore.service.BookService;
@@ -125,7 +125,7 @@ public class CategoryController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\":"
                             + "\"Fiction\", \"description\": \"Description\"}"))
     })
-    public List<BookResponseDtoWithoutCategoryIds> getBooksByCategoryId(
+    public List<BaseBookResponseDto> getBooksByCategoryId(
             @PathVariable Long id,
             @Parameter(description = "Page number (zero-based)", example = "0")
             @RequestParam(defaultValue = "0") int page,
