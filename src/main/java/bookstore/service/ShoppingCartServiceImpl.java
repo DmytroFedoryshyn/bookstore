@@ -2,14 +2,14 @@ package bookstore.service;
 
 import bookstore.dto.cart.AddToCartDto;
 import bookstore.dto.cart.CartResponseDto;
-import bookstore.dto.cartItem.CartItemResponseDto;
-import bookstore.dto.cartItem.UpdateCartItemDto;
+import bookstore.dto.cartitem.CartItemResponseDto;
+import bookstore.dto.cartitem.UpdateCartItemDto;
 import bookstore.mapper.CartMapper;
 import bookstore.model.CartItem;
 import bookstore.model.ShoppingCart;
 import bookstore.model.User;
-import bookstore.repository.cartItem.CartItemRepository;
-import bookstore.repository.shoppingCart.ShoppingCartRepository;
+import bookstore.repository.cartitem.CartItemRepository;
+import bookstore.repository.shoppingcart.ShoppingCartRepository;
 import bookstore.repository.user.UserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

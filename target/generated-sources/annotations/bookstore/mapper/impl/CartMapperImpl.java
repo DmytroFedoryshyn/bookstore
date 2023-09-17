@@ -2,7 +2,7 @@ package bookstore.mapper.impl;
 
 import bookstore.dto.cart.AddToCartDto;
 import bookstore.dto.cart.CartResponseDto;
-import bookstore.dto.cartItem.CartItemResponseDto;
+import bookstore.dto.cartitem.CartItemResponseDto;
 import bookstore.mapper.CartMapper;
 import bookstore.model.Book;
 import bookstore.model.CartItem;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-17T21:01:47+0300",
+    date = "2023-09-17T22:17:57+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 20.0.1 (Oracle Corporation)"
 )
 @Component
@@ -45,20 +45,6 @@ public class CartMapperImpl implements CartMapper {
     }
 
     @Override
-    public CartItem toCartItem(AddToCartDto dto) {
-        if ( dto == null ) {
-            return null;
-        }
-
-        CartItem cartItem = new CartItem();
-
-        cartItem.setBook( addToCartDtoToBook( dto ) );
-        cartItem.setQuantity( dto.getQuantity() );
-
-        return cartItem;
-    }
-
-    @Override
     public CartItemResponseDto toDto(CartItem item) {
         if ( item == null ) {
             return null;
@@ -80,6 +66,20 @@ public class CartMapperImpl implements CartMapper {
         cartItemResponseDto.setQuantity( item.getQuantity() );
 
         return cartItemResponseDto;
+    }
+
+    @Override
+    public CartItem toCartItem(AddToCartDto dto) {
+        if ( dto == null ) {
+            return null;
+        }
+
+        CartItem cartItem = new CartItem();
+
+        cartItem.setBook( addToCartDtoToBook( dto ) );
+        cartItem.setQuantity( dto.getQuantity() );
+
+        return cartItem;
     }
 
     private Long shoppingCartUserId(ShoppingCart shoppingCart) {
@@ -110,20 +110,6 @@ public class CartMapperImpl implements CartMapper {
         return set1;
     }
 
-    protected Book addToCartDtoToBook(AddToCartDto addToCartDto) {
-        if ( addToCartDto == null ) {
-            return null;
-        }
-
-        Book book = new Book();
-
-        if ( addToCartDto.getBookId() != null ) {
-            book.setId( addToCartDto.getBookId() );
-        }
-
-        return book;
-    }
-
     private Long itemBookId(CartItem cartItem) {
         if ( cartItem == null ) {
             return null;
@@ -152,5 +138,19 @@ public class CartMapperImpl implements CartMapper {
             return null;
         }
         return title;
+    }
+
+    protected Book addToCartDtoToBook(AddToCartDto addToCartDto) {
+        if ( addToCartDto == null ) {
+            return null;
+        }
+
+        Book book = new Book();
+
+        if ( addToCartDto.getBookId() != null ) {
+            book.setId( addToCartDto.getBookId() );
+        }
+
+        return book;
     }
 }

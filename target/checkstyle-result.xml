@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.29">
+<file name="D:\mate repos\bookstore\bookstore\src\main\java\bookstore\model\ShoppingCart.java">
+</file>
+<file name="D:\mate repos\bookstore\bookstore\src\main\java\bookstore\repository\cartitem\CartItemRepository.java">
+</file>
+<file name="D:\mate repos\bookstore\bookstore\src\main\java\bookstore\service\ShoppingCartServiceImpl.java">
+</file>
+</checkstyle>

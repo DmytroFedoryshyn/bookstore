@@ -2,8 +2,8 @@ package bookstore.service;
 
 import bookstore.dto.cart.AddToCartDto;
 import bookstore.dto.cart.CartResponseDto;
-import bookstore.dto.cartItem.CartItemResponseDto;
-import bookstore.dto.cartItem.UpdateCartItemDto;
+import bookstore.dto.cartitem.CartItemResponseDto;
+import bookstore.dto.cartitem.UpdateCartItemDto;
 
 public interface ShoppingCartService {
     CartResponseDto getByUser();

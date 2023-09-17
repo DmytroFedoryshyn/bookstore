@@ -30,10 +30,6 @@ public class ShoppingCart {
     @Column(nullable = false)
     private Long id;
 
-    public ShoppingCart(User user) {
-        this.user = user;
-    }
-
     @OneToOne
     private User user;
 
@@ -42,4 +38,8 @@ public class ShoppingCart {
 
     @Column(nullable = false)
     private boolean isDeleted = false;
+
+    public ShoppingCart(User user) {
+        this.user = user;
+    }
 }

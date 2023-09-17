@@ -1,4 +1,4 @@
-package bookstore.repository.cartItem;
+package bookstore.repository.cartitem;
 
 import bookstore.model.CartItem;
 import org.springframework.data.jpa.repository.EntityGraph;
