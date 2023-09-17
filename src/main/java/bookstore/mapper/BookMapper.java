@@ -36,10 +36,10 @@ public interface BookMapper {
     }
 
     @Named("mapCategoriesToLongs")
-    default Set<Long> mapCategoriesToLongs(Set<Category> categories) {
-        return categories.stream()
-                .map(Category::getId)
-                .collect(Collectors.toSet());
+        default Set<Long> mapCategoriesToLongs(Set<Category> categories) {
+            return categories.stream()
+                    .map(Category::getId)
+                    .collect(Collectors.toSet());
     }
 
     @AfterMapping
