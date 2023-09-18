@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,7 +45,7 @@ public class ShoppingCartController {
     @ApiResponse(responseCode = "204", description = "Item added to the cart")
     public void addCartItemTo(
             @RequestBody @Parameter(description = "Item to add to the cart")
-                    AddToCartDto addToCartDto) {
+            @Valid AddToCartDto addToCartDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         service.addItemToCart(addToCartDto, (User) authentication.getPrincipal());
     }
@@ -62,7 +63,7 @@ public class ShoppingCartController {
     public CartItemResponseDto updateCartItem(
             @PathVariable @Parameter(description = "ID of the cart item to update") Long id,
             @RequestBody @Parameter(description = "Updated cart item details")
-                    AddToCartDto dto) {
+            @Valid AddToCartDto dto) {
         return service.updateCartItem(id, dto);
     }
 
