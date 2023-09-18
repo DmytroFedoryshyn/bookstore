@@ -3,7 +3,7 @@ package bookstore.controller;
 import bookstore.dto.cart.AddToCartDto;
 import bookstore.dto.cart.CartResponseDto;
 import bookstore.dto.cartitem.CartItemResponseDto;
-import bookstore.dto.cartitem.UpdateCartItemDto;
+import bookstore.model.User;
 import bookstore.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,8 @@ public class ShoppingCartController {
     @Operation(summary = "Get the user's shopping cart")
     @GetMapping
     public CartResponseDto get() {
-        return service.getByUser();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return service.getShoppingCartByUser((User) authentication.getPrincipal());
     }
 
     @Operation(summary = "Add an item to the shopping cart")
@@ -42,7 +45,8 @@ public class ShoppingCartController {
     public void addCartItemTo(
             @RequestBody @Parameter(description = "Item to add to the cart")
                     AddToCartDto addToCartDto) {
-        service.addItemToCart(addToCartDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        service.addItemToCart(addToCartDto, (User) authentication.getPrincipal());
     }
 
     @Operation(summary = "Update a shopping cart item by ID")
@@ -58,8 +62,8 @@ public class ShoppingCartController {
     public CartItemResponseDto updateCartItem(
             @PathVariable @Parameter(description = "ID of the cart item to update") Long id,
             @RequestBody @Parameter(description = "Updated cart item details")
-                    UpdateCartItemDto dto) {
-        return service.update(id, dto);
+                    AddToCartDto dto) {
+        return service.updateCartItem(id, dto);
     }
 
     @Operation(summary = "Delete a cart item by ID")
@@ -70,6 +74,6 @@ public class ShoppingCartController {
     })
     public void deleteCartItem(@PathVariable @Parameter
             (description = "ID of the cart item to delete") Long id) {
-        service.delete(id);
+        service.deleteCartItem(id);
     }
 }
