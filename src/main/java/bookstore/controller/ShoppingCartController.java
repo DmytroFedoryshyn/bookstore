@@ -16,7 +16,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,18 +34,16 @@ public class ShoppingCartController {
 
     @Operation(summary = "Get the user's shopping cart")
     @GetMapping
-    public CartResponseDto get() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public CartResponseDto get(Authentication authentication) {
         return service.getShoppingCartByUser((User) authentication.getPrincipal());
     }
 
     @Operation(summary = "Add an item to the shopping cart")
     @PostMapping()
     @ApiResponse(responseCode = "204", description = "Item added to the cart")
-    public void addCartItemTo(
+    public void addCartItemTo(Authentication authentication,
             @RequestBody @Parameter(description = "Item to add to the cart")
             @Valid AddToCartDto addToCartDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         service.addItemToCart(addToCartDto, (User) authentication.getPrincipal());
     }
 
