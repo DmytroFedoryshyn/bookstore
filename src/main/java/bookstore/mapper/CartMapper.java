@@ -3,6 +3,7 @@ package bookstore.mapper;
 import bookstore.config.MapperConfig;
 import bookstore.dto.cart.AddToCartDto;
 import bookstore.dto.cart.CartResponseDto;
+import bookstore.dto.cartitem.CartItemFullInfoResponseDto;
 import bookstore.dto.cartitem.CartItemResponseDto;
 import bookstore.model.CartItem;
 import bookstore.model.ShoppingCart;
@@ -18,6 +19,11 @@ public interface CartMapper {
     @Mapping(source = "book.id", target = "bookId")
     @Mapping(source = "book.title", target = "bookTitle")
     CartItemResponseDto toDto(CartItem item);
+
+    @Mapping(source = "book.id", target = "bookId")
+    @Mapping(source = "book.title", target = "bookTitle")
+    @Mapping(source = "shoppingCart.id", target = "shoppingCartId")
+    CartItemFullInfoResponseDto toFullInfoDto(CartItem item);
 
     @Mapping(source = "bookId", target = "book.id")
     CartItem toCartItem(AddToCartDto dto);

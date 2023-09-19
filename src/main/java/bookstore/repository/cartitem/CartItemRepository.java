@@ -8,5 +8,4 @@ import org.springframework.data.repository.query.Param;
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @EntityGraph(attributePaths = {"book"})
     CartItem getCartItemById(@Param("cartItemId") Long cartItemId);
-
 }

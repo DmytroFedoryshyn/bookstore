@@ -35,4 +35,19 @@ public class CartItem {
 
     @Column(nullable = false)
     private boolean isDeleted = false;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(obj instanceof CartItem)) {
+            return false;
+        }
+
+        CartItem other = (CartItem) obj;
+
+        return id.equals(other.id);
+    }
 }

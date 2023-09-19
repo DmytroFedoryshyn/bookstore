@@ -2,6 +2,7 @@ package bookstore.service;
 
 import bookstore.dto.cart.AddToCartDto;
 import bookstore.dto.cart.CartResponseDto;
+import bookstore.dto.cartitem.CartItemFullInfoResponseDto;
 import bookstore.dto.cartitem.CartItemResponseDto;
 import bookstore.mapper.CartMapper;
 import bookstore.model.CartItem;
@@ -43,5 +44,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void deleteCartItem(Long id) {
         cartItemRepository.deleteById(id);
+    }
+
+    @Override
+    public CartItemFullInfoResponseDto getCartItemById(Long id) {
+        return cartMapper.toFullInfoDto(cartItemRepository.getCartItemById(id));
     }
 }
