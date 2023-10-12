@@ -103,7 +103,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponse(responseCode = "204", description = "Book deleted")
     @ApiResponse(responseCode = "404", description = "Book not found")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void delete(@PathVariable Long id) {
         bookService.delete(id);
     }
