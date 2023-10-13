@@ -6,10 +6,13 @@ import bookstore.exception.EntityNotFoundException;
 import bookstore.mapper.CategoryMapper;
 import bookstore.model.Category;
 import bookstore.repository.category.CategoryRepository;
+import bookstore.util.SortParametersParsingUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,9 +20,13 @@ import org.springframework.stereotype.Service;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
+    private final SortParametersParsingUtil sortParametersParsingUtil;
 
     @Override
-    public List<CategoryResponseDto> findAll(Pageable pageable) {
+    public List<CategoryResponseDto> findAll(int page, int size, String sort) {
+        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
         return repository.findAll(pageable)
                 .stream()
                 .map(mapper::toDto)

@@ -7,7 +7,6 @@ import bookstore.dto.orderitem.OrderItemResponseDto;
 import bookstore.model.User;
 import bookstore.service.OrderItemService;
 import bookstore.service.OrderService;
-import bookstore.util.SortParametersParsingUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,9 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -43,7 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
     private final OrderService orderService;
     private final OrderItemService orderItemService;
-    private final SortParametersParsingUtil sortParametersParsingUtil;
     
     @Operation(summary = "Place a new order")
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,6 +63,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Get all orders")
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping
     public List<OrderResponseDto> getAllOrders(Authentication authentication,
                                                @Parameter(description =
@@ -81,10 +77,7 @@ public class OrderController {
                                                    example = "orderDate,desc")
                                                    @RequestParam(defaultValue = "orderDate,desc")
                                                        String sort) {
-        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
-        return orderService.getByUser((User) authentication.getPrincipal(), pageable);
+        return orderService.getByUser((User) authentication.getPrincipal(), page, size, sort);
     }
 
     @Operation(summary = "Update an existing order status by ID")

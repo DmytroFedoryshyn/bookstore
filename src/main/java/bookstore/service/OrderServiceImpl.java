@@ -10,14 +10,16 @@ import bookstore.model.OrderItem;
 import bookstore.model.User;
 import bookstore.repository.book.BookRepository;
 import bookstore.repository.order.OrderRepository;
+import bookstore.util.SortParametersParsingUtil;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final BookRepository bookRepository;
+    private final SortParametersParsingUtil sortParametersParsingUtil;
 
     @Override
     public OrderResponseDto save(OrderRequestDto dto, User user) {
@@ -35,18 +38,14 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
 
         Set<OrderItem> orderItems = order.getOrderItems();
-        Iterator<OrderItem> iterator = orderItems.iterator();
-
-        //?
-        while (iterator.hasNext()) {
-            OrderItem orderItem = iterator.next();
+        
+        for (OrderItem orderItem : orderItems) {
             orderItem.setOrder(order);
             Book book = bookRepository.getReferenceById(orderItem.getBook().getId());
             orderItem.setBook(book);
             orderItem.setPrice(orderItem.getBook().getPrice());
         }
 
-        //?
         order.setTotal(order.getOrderItems().stream()
                 .map(OrderItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
@@ -55,7 +54,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDto> getByUser(User user, Pageable pageable) {
+    public List<OrderResponseDto> getByUser(User user, int page, int size, String sort) {
+        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
+
         return orderRepository.getAllByUser(user, pageable)
                 .stream()
             .map(orderMapper::toDto)

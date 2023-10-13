@@ -15,9 +15,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,11 +45,7 @@ public class BookController {
             @RequestParam(defaultValue = "10") int size,
             @Parameter(description = "Sort order and fields", example = "title,desc")
             @RequestParam(defaultValue = "title,desc") String sort) {
-
-        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
-        return bookService.findAll(pageable);
+        return bookService.findAll(page, size, sort);
     }
 
     @Operation(summary = "Get a book by ID")
@@ -126,10 +119,6 @@ public class BookController {
             @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Number of items per page", example = "10")
             @RequestParam(defaultValue = "10") int size) {
-
-        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
-        return bookService.search(searchParameters, pageable);
+        return bookService.search(searchParameters, page, size, sort);
     }
 }

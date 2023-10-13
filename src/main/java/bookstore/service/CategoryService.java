@@ -3,10 +3,9 @@ package bookstore.service;
 import bookstore.dto.category.CategoryResponseDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
 import java.util.List;
-import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
-    List<CategoryResponseDto> findAll(Pageable pageable);
+    List<CategoryResponseDto> findAll(int page, int size, String sort);
 
     CategoryResponseDto getById(Long id);
 
