@@ -9,11 +9,14 @@ import bookstore.mapper.BookMapper;
 import bookstore.model.Book;
 import bookstore.repository.book.BookRepository;
 import bookstore.repository.book.BookSpecificationBuilder;
+import bookstore.util.SortParametersParsingUtil;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookSpecificationBuilder bookSpecificationBuilder;
     private final BookMapper bookMapper;
+    private final SortParametersParsingUtil sortParametersParsingUtil;
 
     @Override
     public BookResponseDto save(CreateBookRequestDto product) {
@@ -32,7 +36,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookResponseDto> findAll(Pageable pageable) {
+    public List<BookResponseDto> findAll(int page, int size, String sort) {
+        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
         return bookRepository.findAll(pageable).stream()
                 .map(bookMapper::toBookDto)
                 .collect(Collectors.toList());
@@ -62,7 +69,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookResponseDto> search(BookSearchParametersDto searchParametersDto,
-                                        Pageable pageable) {
+                                        int page, int size, String sort) {
+        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
         Specification<Book> bookSpecification = bookSpecificationBuilder
                 .build(searchParametersDto);
         return bookRepository.findAll(bookSpecification, pageable)
@@ -72,7 +82,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BaseBookResponseDto> findAllByCategories_Id(
-            Long id, Pageable pageable) {
+            Long id, int page, int size, String sort) {
+        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
         return bookRepository.findAllByCategoryId(id, pageable)
                 .stream()
                 .map(bookMapper::toDtoWithoutCategories)

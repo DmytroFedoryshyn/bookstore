@@ -5,7 +5,6 @@ import bookstore.dto.category.CategoryResponseDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
 import bookstore.service.BookService;
 import bookstore.service.CategoryService;
-import bookstore.util.SortParametersParsingUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,9 +15,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +35,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
     private final CategoryService categoryService;
     private final BookService bookService;
-    private final SortParametersParsingUtil sortParametersParsingUtil;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Create a new category")
@@ -71,10 +66,8 @@ public class CategoryController {
             @RequestParam(defaultValue = "10") int size,
             @Parameter(description = "Sort order and fields", example = "title,desc")
             @RequestParam(defaultValue = "title,desc") String sort) {
-        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
-        return categoryService.findAll(pageable);
+        return categoryService.findAll(page, size, sort);
     }
 
     @Operation(summary = "Get a category by ID")
@@ -133,9 +126,6 @@ public class CategoryController {
             @RequestParam(defaultValue = "10") int size,
             @Parameter(description = "Sort order and fields", example = "title,desc")
             @RequestParam(defaultValue = "title,desc") String sort) {
-        Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
-        return bookService.findAllByCategories_Id(id, pageable);
+        return bookService.findAllByCategories_Id(id, page, size, sort);
     }
 }
