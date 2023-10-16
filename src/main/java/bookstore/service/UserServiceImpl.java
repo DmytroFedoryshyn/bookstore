@@ -9,14 +9,15 @@ import bookstore.model.ShoppingCart;
 import bookstore.model.User;
 import bookstore.repository.shoppingcart.ShoppingCartRepository;
 import bookstore.repository.user.UserRepository;
-import jakarta.transaction.Transactional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final ShoppingCartRepository shoppingCartRepository;
@@ -25,7 +26,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
     public UserResponseDto registerUser(UserRegistrationRequest request) {
         if (repository.findByEmail(request.getEmail()).isPresent()) {
             throw new RegistrationException("Unable to complete registration.");
