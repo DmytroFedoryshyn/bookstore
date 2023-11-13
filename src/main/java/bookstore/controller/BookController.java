@@ -1,10 +1,9 @@
-package bookstore.controller;
+package bookstore.controller.book;
 
 import bookstore.dto.book.BookResponseDto;
 import bookstore.dto.book.BookSearchParametersDto;
 import bookstore.dto.book.CreateBookRequestDto;
 import bookstore.service.BookService;
-import bookstore.util.SortParametersParsingUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Book Controller", description = "Endpoints for managing books")
 public class BookController {
     private final BookService bookService;
-    private final SortParametersParsingUtil sortParametersParsingUtil;
 
     @Operation(summary = "Get all books")
     @GetMapping

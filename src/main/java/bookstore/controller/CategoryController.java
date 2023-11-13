@@ -1,4 +1,4 @@
-package bookstore.controller;
+package bookstore.controller.category;
 
 import bookstore.dto.book.BaseBookResponseDto;
 import bookstore.dto.category.CategoryResponseDto;
@@ -64,8 +64,8 @@ public class CategoryController {
             @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Number of items per page", example = "10")
             @RequestParam(defaultValue = "10") int size,
-            @Parameter(description = "Sort order and fields", example = "title,desc")
-            @RequestParam(defaultValue = "title,desc") String sort) {
+            @Parameter(description = "Sort order and fields", example = "name,desc")
+            @RequestParam(defaultValue = "name,asc") String sort) {
 
         return categoryService.findAll(page, size, sort);
     }
