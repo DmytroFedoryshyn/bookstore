@@ -19,9 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookSpecificationBuilder bookSpecificationBuilder;
@@ -32,7 +34,7 @@ public class BookServiceImpl implements BookService {
     public BookResponseDto save(CreateBookRequestDto product) {
         return bookMapper
                 .toBookDto(bookRepository
-                        .save(bookMapper.toBook(product)));
+                            .save(bookMapper.toBook(product)));
     }
 
     @Override
