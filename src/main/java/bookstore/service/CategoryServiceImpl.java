@@ -8,6 +8,7 @@ import bookstore.model.Category;
 import bookstore.repository.category.CategoryRepository;
 import bookstore.util.SortParametersParsingUtil;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +38,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponseDto getById(Long id) {
-        return mapper.toDto(repository.getReferenceById(id));
+        Optional<Category> optional = repository.findById(id);
+        if (optional.isEmpty()) {
+            throw new EntityNotFoundException("Could not retrieve category by ID");
+        }
+
+        return mapper.toDto(optional.get());
     }
 
     @Override

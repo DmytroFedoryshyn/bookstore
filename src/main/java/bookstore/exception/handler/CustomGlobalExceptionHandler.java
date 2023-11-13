@@ -1,5 +1,6 @@
 package bookstore.exception.handler;
 
+import bookstore.exception.EntityNotFoundException;
 import bookstore.exception.RegistrationException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -60,9 +61,22 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleEntityNotFoundException(
+            Exception ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND);
+        body.put("type", ex.getClass());
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(
             Exception ex) {
+        ex.printStackTrace();
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
