@@ -1,4 +1,4 @@
-package bookstore.service.book;
+package bookstore.service;
 
 import bookstore.dto.book.BaseBookResponseDto;
 import bookstore.dto.book.BookResponseDto;
@@ -9,7 +9,6 @@ import bookstore.mapper.BookMapper;
 import bookstore.model.Book;
 import bookstore.repository.book.BookRepository;
 import bookstore.repository.book.BookSpecificationBuilder;
-import bookstore.service.BookServiceImpl;
 import bookstore.util.SortParametersParsingUtil;
 import java.math.BigDecimal;
 import java.util.Collections;

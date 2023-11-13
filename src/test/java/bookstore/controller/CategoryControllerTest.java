@@ -1,4 +1,4 @@
-package bookstore.controller.category;
+package bookstore.controller;
 
 import bookstore.dto.category.CategoryResponseDto;
 import bookstore.dto.category.CreateCategoryRequestDto;
