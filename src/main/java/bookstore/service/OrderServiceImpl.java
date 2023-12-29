@@ -7,9 +7,9 @@ import bookstore.mapper.OrderMapper;
 import bookstore.model.Book;
 import bookstore.model.Order;
 import bookstore.model.OrderItem;
-import bookstore.model.User;
 import bookstore.repository.book.BookRepository;
 import bookstore.repository.order.OrderRepository;
+import bookstore.repository.user.UserRepository;
 import bookstore.util.SortParametersParsingUtil;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,13 +31,14 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final BookRepository bookRepository;
     private final SortParametersParsingUtil sortParametersParsingUtil;
+    private final UserRepository userRepository;
 
     @Override
-    public OrderResponseDto save(OrderRequestDto dto, User user) {
+    public OrderResponseDto save(OrderRequestDto dto, String username) {
         Order order = orderMapper.toEntity(dto);
         order.setStatus(Order.Status.PENDING);
         order.setOrderDate(LocalDateTime.now());
-        order.setUser(user);
+        order.setUser(userRepository.findByEmail(username).get());
 
         Set<OrderItem> orderItems = order.getOrderItems();
         
@@ -56,11 +57,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDto> getByUser(User user, int page, int size, String sort) {
+    public List<OrderResponseDto> getByUser(String username, int page, int size, String sort) {
         Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
 
-        return orderRepository.getAllByUser(user, pageable)
+        return orderRepository.getAllByUser_Email(username, pageable)
                 .stream()
             .map(orderMapper::toDto)
             .collect(Collectors.toList());
