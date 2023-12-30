@@ -26,12 +26,12 @@ public class OrderRepositoryTest {
     @Sql(value = "classpath:deleteCartAndItem.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Sql(value = "classpath:deleteOrderAndOrderItem.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getAllOrdersByUser_Success() {
-        Assertions.assertEquals(1, repository.getAllByUser_Email("user@example.com", null).size());
+        Assertions.assertEquals(1, repository.getAllByUserEmail("user@example.com", null).size());
     }
 
     @Test
     @DisplayName("Find all orders by non-existent user failure")
     public void getAllOrdersByUser_Failure() {
-        Assertions.assertTrue(repository.getAllByUser_Email("non-existent@example.com", null).isEmpty());
+        Assertions.assertTrue(repository.getAllByUserEmail("non-existent@example.com", null).isEmpty());
     }
 }

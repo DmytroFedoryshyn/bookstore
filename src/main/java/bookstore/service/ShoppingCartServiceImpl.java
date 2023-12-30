@@ -24,14 +24,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public CartResponseDto getShoppingCartByUsername(String username) {
-        ShoppingCart cart = repository.getByUser_Email(username);
+        ShoppingCart cart = repository.getByUserEmail(username);
         return cartMapper.toDto(cart);
     }
 
     @Override
     public void addItemToCart(AddToCartDto dto, String username) {
         CartItem cartItem = cartMapper.toCartItem(dto);
-        ShoppingCart cart = repository.getByUser_Email(username);
+        ShoppingCart cart = repository.getByUserEmail(username);
         cartItem.setShoppingCart(cart);
         cart.getItems().add(cartItem);
         repository.save(cart);

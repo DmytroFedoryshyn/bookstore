@@ -55,7 +55,7 @@ public class ShoppingCartServiceTest {
         CartResponseDto cartResponseDto = new CartResponseDto();
         cartResponseDto.setUserId(user.getId());
 
-        Mockito.when(shoppingCartRepository.getByUser_Email(user.getUsername())).thenReturn(shoppingCart);
+        Mockito.when(shoppingCartRepository.getByUserEmail(user.getUsername())).thenReturn(shoppingCart);
         Mockito.when(cartMapper.toDto(shoppingCart)).thenReturn(cartResponseDto);
 
         Assertions.assertNotNull(shoppingCartService.getShoppingCartByUsername(user.getUsername()));
@@ -85,12 +85,12 @@ public class ShoppingCartServiceTest {
         book.setId(1L);
         cartItem.setBook(book);
 
-        Mockito.when(shoppingCartRepository.getByUser_Email(user.getUsername())).thenReturn(shoppingCart);
+        Mockito.when(shoppingCartRepository.getByUserEmail(user.getUsername())).thenReturn(shoppingCart);
         Mockito.when(cartMapper.toCartItem(addToCartDto)).thenReturn(cartItem);
 
         shoppingCartService.addItemToCart(addToCartDto, user.getUsername());
 
-        Mockito.verify(shoppingCartRepository, Mockito.times(1)).getByUser_Email(user.getUsername());
+        Mockito.verify(shoppingCartRepository, Mockito.times(1)).getByUserEmail(user.getUsername());
 
         Mockito.verify(shoppingCartRepository, Mockito.times(1)).save(shoppingCart);
     }

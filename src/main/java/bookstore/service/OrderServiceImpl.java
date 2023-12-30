@@ -3,10 +3,12 @@ package bookstore.service;
 import bookstore.dto.order.OrderRequestDto;
 import bookstore.dto.order.OrderResponseDto;
 import bookstore.dto.order.OrderUpdateDto;
+import bookstore.exception.EntityNotFoundException;
 import bookstore.mapper.OrderMapper;
 import bookstore.model.Book;
 import bookstore.model.Order;
 import bookstore.model.OrderItem;
+import bookstore.model.User;
 import bookstore.repository.book.BookRepository;
 import bookstore.repository.order.OrderRepository;
 import bookstore.repository.user.UserRepository;
@@ -14,6 +16,7 @@ import bookstore.util.SortParametersParsingUtil;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +41,14 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderMapper.toEntity(dto);
         order.setStatus(Order.Status.PENDING);
         order.setOrderDate(LocalDateTime.now());
-        order.setUser(userRepository.findByEmail(username).get());
+
+        Optional<User> userOptional = userRepository.findByEmail(username);
+
+        if (userOptional.isEmpty()) {
+            throw new EntityNotFoundException("User with email " + username + " not found");
+        }
+
+        order.setUser(userOptional.get());
 
         Set<OrderItem> orderItems = order.getOrderItems();
         
@@ -61,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
         Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
 
-        return orderRepository.getAllByUser_Email(username, pageable)
+        return orderRepository.getAllByUserEmail(username, pageable)
                 .stream()
             .map(orderMapper::toDto)
             .collect(Collectors.toList());

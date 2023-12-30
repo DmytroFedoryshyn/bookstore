@@ -71,7 +71,7 @@ public class OrderServiceTest {
         String sort = "createdAt,desc";
 
         when(sortParametersParsingUtil.parseSortOrder(any(String.class))).thenReturn(Sort.Order.desc("createdAt"));
-        when(orderRepository.getAllByUser_Email(any(), any(Pageable.class))).thenReturn(List.of(new Order()));
+        when(orderRepository.getAllByUserEmail(any(), any(Pageable.class))).thenReturn(List.of(new Order()));
         when(orderMapper.toDto(any(Order.class))).thenReturn(new OrderResponseDto());
 
         List<OrderResponseDto> result = orderService.getByUser("user@example.com", page, size, sort);
@@ -79,10 +79,10 @@ public class OrderServiceTest {
         assertNotNull(result);
 
         Mockito.verify(sortParametersParsingUtil, Mockito.times(1)).parseSortOrder(eq(sort));
-        Mockito.verify(orderRepository, Mockito.times(1)).getAllByUser_Email(any(), any(Pageable.class));
+        Mockito.verify(orderRepository, Mockito.times(1)).getAllByUserEmail(any(), any(Pageable.class));
         Mockito.verify(orderMapper, Mockito.times(1)).toDto(any(Order.class));
 
-        Mockito.verify(orderRepository, Mockito.times(1)).getAllByUser_Email(any(), any(Pageable.class));
+        Mockito.verify(orderRepository, Mockito.times(1)).getAllByUserEmail(any(), any(Pageable.class));
         Mockito.verifyNoMoreInteractions(orderRepository);
     }
 
