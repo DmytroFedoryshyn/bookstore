@@ -4,12 +4,11 @@ import bookstore.dto.cart.AddToCartDto;
 import bookstore.dto.cart.CartResponseDto;
 import bookstore.dto.cartitem.CartItemFullInfoResponseDto;
 import bookstore.dto.cartitem.CartItemResponseDto;
-import bookstore.model.User;
 
 public interface ShoppingCartService {
-    CartResponseDto getShoppingCartByUser(User user);
+    CartResponseDto getShoppingCartByUsername(String username);
 
-    void addItemToCart(AddToCartDto dto, User user);
+    void addItemToCart(AddToCartDto dto, String username);
 
     CartItemResponseDto updateCartItem(Long id, AddToCartDto dto);
 

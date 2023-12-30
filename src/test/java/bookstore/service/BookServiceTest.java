@@ -15,22 +15,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
@@ -105,7 +105,7 @@ class BookServiceTest {
 
         when(sortParametersParsingUtil.parseSortOrder(sortString)).thenReturn(Sort.Order.asc(sortString));
         when(bookRepository.findAll(any(PageRequest.class)))
-            .thenReturn(new PageImpl<>(Collections.singletonList(new Book())));
+                .thenReturn(new PageImpl<>(Collections.singletonList(new Book())));
         when(bookMapper.toBookDto(any())).thenReturn(new BookResponseDto());
 
         List<BookResponseDto> result = bookService.findAll(1, 10, sortString);

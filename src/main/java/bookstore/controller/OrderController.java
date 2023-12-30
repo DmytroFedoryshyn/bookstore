@@ -4,7 +4,6 @@ import bookstore.dto.order.OrderRequestDto;
 import bookstore.dto.order.OrderResponseDto;
 import bookstore.dto.order.OrderUpdateDto;
 import bookstore.dto.orderitem.OrderItemResponseDto;
-import bookstore.model.User;
 import bookstore.service.OrderItemService;
 import bookstore.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,7 +58,7 @@ public class OrderController {
     @PostMapping
     public OrderResponseDto placeOrder(@Valid @RequestBody OrderRequestDto order,
                                        Authentication authentication) {
-        return orderService.save(order, (User) authentication.getPrincipal());
+        return orderService.save(order, authentication.getName());
     }
 
     @Operation(summary = "Get all orders")
@@ -77,7 +76,7 @@ public class OrderController {
                                                    example = "orderDate,desc")
                                                    @RequestParam(defaultValue = "orderDate,desc")
                                                        String sort) {
-        return orderService.getByUser((User) authentication.getPrincipal(), page, size, sort);
+        return orderService.getByUser(authentication.getName(), page, size, sort);
     }
 
     @Operation(summary = "Update an existing order status by ID")

@@ -4,7 +4,6 @@ import bookstore.dto.cart.AddToCartDto;
 import bookstore.dto.cart.CartResponseDto;
 import bookstore.dto.cartitem.CartItemFullInfoResponseDto;
 import bookstore.dto.cartitem.CartItemResponseDto;
-import bookstore.model.User;
 import bookstore.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,7 +38,7 @@ public class ShoppingCartController {
     @Operation(summary = "Get the user's shopping cart")
     @GetMapping
     public CartResponseDto get(Authentication authentication) {
-        return service.getShoppingCartByUser((User) authentication.getPrincipal());
+        return service.getShoppingCartByUsername(authentication.getName());
     }
 
     @Operation(summary = "Add an item to the shopping cart")
@@ -46,7 +47,7 @@ public class ShoppingCartController {
     public void addCartItemTo(Authentication authentication,
                               @RequestBody @Parameter(description = "Item to add to the cart")
                               @Valid AddToCartDto addToCartDto) {
-        service.addItemToCart(addToCartDto, (User) authentication.getPrincipal());
+        service.addItemToCart(addToCartDto, authentication.getName());
     }
 
     @Operation(summary = "Update a shopping cart item by ID")
@@ -75,6 +76,7 @@ public class ShoppingCartController {
 
     @Operation(summary = "Delete a cart item by ID")
     @DeleteMapping("/cart-items/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Cart item deleted"),
             @ApiResponse(responseCode = "404", description = "Cart item not found")
@@ -93,8 +95,7 @@ public class ShoppingCartController {
                                                      @PathVariable Long id) {
         CartItemFullInfoResponseDto cartItem = service.getCartItemById(id);
 
-        User user = (User) authentication.getPrincipal();
-        CartResponseDto cart = service.getShoppingCartByUser(user);
+        CartResponseDto cart = service.getShoppingCartByUsername(authentication.getName());
         if (cart == null || !cartItem.getShoppingCartId().equals(cart.getId())) {
             throw new AccessDeniedException("this shopping cart item doesn't"
                     + " belong to the current user");

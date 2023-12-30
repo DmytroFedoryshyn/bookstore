@@ -3,6 +3,7 @@ package bookstore.service;
 import bookstore.dto.order.OrderRequestDto;
 import bookstore.dto.order.OrderResponseDto;
 import bookstore.dto.order.OrderUpdateDto;
+import bookstore.exception.EntityNotFoundException;
 import bookstore.mapper.OrderMapper;
 import bookstore.model.Book;
 import bookstore.model.Order;
@@ -10,10 +11,12 @@ import bookstore.model.OrderItem;
 import bookstore.model.User;
 import bookstore.repository.book.BookRepository;
 import bookstore.repository.order.OrderRepository;
+import bookstore.repository.user.UserRepository;
 import bookstore.util.SortParametersParsingUtil;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +34,21 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final BookRepository bookRepository;
     private final SortParametersParsingUtil sortParametersParsingUtil;
+    private final UserRepository userRepository;
 
     @Override
-    public OrderResponseDto save(OrderRequestDto dto, User user) {
+    public OrderResponseDto save(OrderRequestDto dto, String username) {
         Order order = orderMapper.toEntity(dto);
         order.setStatus(Order.Status.PENDING);
         order.setOrderDate(LocalDateTime.now());
-        order.setUser(user);
+
+        Optional<User> userOptional = userRepository.findByEmail(username);
+
+        if (userOptional.isEmpty()) {
+            throw new EntityNotFoundException("User with email " + username + " not found");
+        }
+
+        order.setUser(userOptional.get());
 
         Set<OrderItem> orderItems = order.getOrderItems();
         
@@ -56,11 +67,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDto> getByUser(User user, int page, int size, String sort) {
+    public List<OrderResponseDto> getByUser(String username, int page, int size, String sort) {
         Sort.Order sortOrder = sortParametersParsingUtil.parseSortOrder(sort);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortOrder));
 
-        return orderRepository.getAllByUser(user, pageable)
+        return orderRepository.getAllByUserEmail(username, pageable)
                 .stream()
             .map(orderMapper::toDto)
             .collect(Collectors.toList());
