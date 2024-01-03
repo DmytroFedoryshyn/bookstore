@@ -36,10 +36,12 @@ public class SecurityConfig {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        auth -> auth
+                        .authorizeHttpRequests(
+                            auth -> auth
                                 .requestMatchers(
                                         new AntPathRequestMatcher("/api/auth/**"),
+                                        new AntPathRequestMatcher("/swagger-ui/**"),
+                                        new AntPathRequestMatcher("/v3/api-docs/**"),
                                         new AntPathRequestMatcher("/h2-console/**"))
                                 .permitAll()
                                 .anyRequest()
